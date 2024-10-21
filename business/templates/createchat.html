@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Create Chat{% endblock %}
+
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+
+{% block addbutton %}
+    {% if request.user.is_admin %}
+        <p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+            <a href="{% url 'viewuser' %}">Add user</a>
+        </p>
+    {% endif %}
+{% endblock  %}
+
+{% block content %}
+    <form method="POST" class="border p-3 w-sm-50 mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="receiver" class="form-label">Recipiont number</label>
+            <input type="tel" id="receiver" name="receiver" placeholder="Enter number" class="form-control" required >
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Message</label><br >
+            <textarea id="message" rows="4" cols="45" name="message" placeholder="Enter your message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Send</button>
+    </form>
+{% endblock %}

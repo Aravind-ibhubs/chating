@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Users List{% endblock  %}
+
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+
+{% block addbutton %}
+{% if request.user.is_admin %}
+<p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+    <a href="{% url 'viewuser' %}">Users</a>
+</P>
+{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <table class="table table-dark table-hover table-bordered mt-3">
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Staff</th>
+            <th scope="col">Admin</th>
+        </tr>
+        {% for user in users %}
+            <tr scope="row">
+                <td>{{ user.first_name}}</a></td>
+                <td>{{ user.last_name}}</td>
+                <td><a href="{% url 'othermessages' user.id %}">{{ user.username}}</a></td>
+                <td>{{ user.email}}</td>
+                <td>{{ user.is_staff}}</td>
+                <td>{{ user.is_admin}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <button class="btn btn-dark"><a href="{% url 'adduser' %}">Add</a></button>
+{% endblock  %}
+

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Add a User{% endblock  %}
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+
+{% block addbutton %}
+{% if request.user.is_admin %}
+<p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+    <a href="{% url 'viewuser' %}">Users</a>
+</P>
+{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <h4>Registering user</h4>
+    <form method="POST" action="{% url 'adduser' %}" class="border p-3 w-sm-50">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Enter first name" class="form-control" required >
+        </div>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Enter last name" class="form-control" required >
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">User Name</label>
+            <input type="text" id="username" name="username" placeholder="Enter user name" class="form-control" required >
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter mail id" class="form-control" required >
+        </div>
+        <div class="mb-3">
+            <label for="is_admin" class="form-label">Admin</label>
+            <input type="checkbox" id="is_admin" name="is_admin" class="" checked >
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" class="form-control" required >
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Add</button>
+    </form>
+{% endblock  %}
+
+

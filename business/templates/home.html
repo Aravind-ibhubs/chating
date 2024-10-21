@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% load bootstrap5 %}
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+{% block addbutton %}
+{% if request.user.is_admin %}
+    <p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        <a href="{% url 'viewuser' %}">Add user</a>
+    </p>
+{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <h5 class="text-center mt-4">
+        {% if request.user.is_admin %}
+        Hi, You are  the admin user. You can create users and 
+        check other users messages.
+        {% else %}
+        Hi, You are the normal user. You can create message and
+        check your message
+        {% endif %}
+    </h5>
+{% endblock content %}
+

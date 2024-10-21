@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Chat{% endblock  %}
+
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+
+{% block addbutton %}
+{% if request.user.is_admin %}
+<p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+    <a href="{% url 'viewuser' %}">Users</a>
+</P>
+{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <div class="w-sm-75 w-75">
+    {% for message in messages %}
+        <div class="card mt-3 p-2">
+            <p class="card-title text-center">{{ message.msg_receiver}}</p>
+            <p class="card-text"><bold class="link-underline-secondary">Message : </bold>{{ message.content }}</p>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock  %}
