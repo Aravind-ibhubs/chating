@@ -98,21 +98,6 @@ def create_chat(request):
         content = request.POST.get("message")
         receiver = request.POST.get("receiver")
         
-        account_sid = 'AC089a50721eca956f9c1922e4ba480ef9'
-        auth_token = '7b5566d7fd2d7c9788f3c0796a315f6a'
-        client = Client(account_sid, auth_token)
-        
-        from_whatsapp = 'whatsapp:+917997627817'
-        to_whatsapp = f'whatsapp:+91{receiver}'
-        
-        message = client.messages.create(
-            body=content,
-            from_='whatsapp:+14155238886',
-            to=f'whatsapp:+91{receiver}'
-        )
-        
-        print(message)
-        
         chat = Chat.objects.create(
             sender_id=current_user,
             content=content,
