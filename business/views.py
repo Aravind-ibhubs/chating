@@ -18,9 +18,8 @@ def login_view(request):
             
             if user is not None:
                 login(request, user)
+                messages.success(request, "You login to website sucessfully")
                 return redirect('home')  # Redirect to a homepage or dashboard
-            else:
-                return redirect('login') # Redirect to Login Page
     else:
         form = AuthenticationForm()
 
@@ -69,7 +68,10 @@ def create_user(request):
  
 @login_required       
 def view_user(request):
-    users = User.objects.all().values()
+    if request.user.username == "Admin":
+        users = User.objects.exclude(username="Admin")
+    else:
+        users = User.objects.filter(departmant=request.user.departmant).values().exclude(username="Admin")
     
     return render(request, 'users.html', {'users' : users})
 

@@ -22,6 +22,7 @@
             <th scope="col">Email</th>
             <th scope="col">Staff</th>
             <th scope="col">Admin</th>
+            <th scope="col">Department</th>
         </tr>
         {% for user in users %}
             <tr scope="row">
@@ -31,9 +32,12 @@
                 <td>{{ user.email}}</td>
                 <td>{{ user.is_staff}}</td>
                 <td>{{ user.is_admin}}</td>
+                <td>{{ user.departmant }}</td>
             </tr>
         {% endfor %}
     </table>
+    {% if user.username == "Admin" %}
     <button class="btn btn-dark"><a href="{% url 'adduser' %}">Add</a></button>
+    {% endif %}
 {% endblock  %}
 

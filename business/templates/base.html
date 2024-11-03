@@ -20,7 +20,21 @@
             </div>
         </nav>
         <main class="d-flex flex-column justify-content-center align-items-center w-90">
-            {% block content %}{% endblock %}
+            <div id="messageContainers">
+                {% block messagecontainer %}{% endblock  %}
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const msgCont = document.getElementById('messageContainers');
+                    if (msgCont) {
+                        setTimeout(function() {
+                            msgCont.style.display = 'none';
+                        }, 5000)
+                    }
+                })
+            </script>
+            {% block content %}
+            {% endblock %}
         </main>
     </body>
 </html>
