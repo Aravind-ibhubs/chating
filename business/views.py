@@ -4,9 +4,14 @@ from django.shortcuts import render, redirect,get_list_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from business.models import User, Chat
+from business.models import User, Chat, Jobs
 from twilio.rest import Client
+from .forms import JobPosts
 
+def home(request):
+    jobs = Jobs.objects.all().values()[ :10]
+    
+    return render(request, 'mainpage.html', {"jobs": jobs})
 
 def login_view(request):
     if request.method == 'POST':
@@ -19,20 +24,78 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "You login to website sucessfully")
-                return redirect('home')  # Redirect to a homepage or dashboard
+                return redirect('profile')  # Redirect to a homepage or dashboard
     else:
         form = AuthenticationForm()
 
     return render(request, 'login.html', {'form': form})
 
+def registeruser(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        department = request.POST.get("department")
+        
+        print(request.POST)
+        user = User.objects.filter(username  = username)
+        
+        if user.exists():
+            messages.error(request, "Username is already taken")
+            return redirect('registration')
+            
+        user = User.objects.create_user(
+            first_name=firstname,
+            last_name=lastname,
+            username=username,
+            email=email,
+            is_staff= False,
+            is_admin = False,
+            departmant = department,
+            password=password
+        )
+        
+        user.save()
+        messages.success(request, "Registration is successfully completed")
+        return redirect('login')
+    
+    return render(request, 'register.html')
+
 @login_required
-def home(request):
+def profile(request):
     return render(request, 'home.html', {"user" : request.user})
+
+@login_required
+def create_post(request):
+    if request.method == "POST":
+        form = JobPosts(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')  
+    else:
+        form = JobPosts()
+        
+    return render(request, 'createjob.html', {'form': form})
+
+@login_required
+def job_search(request):
+    jobs = Jobs.objects.all().values()
+    if request.method == "POST":
+        search = request.POST.get("searching")
+        if search != "":
+            jobs = Jobs.objects.filter(post__contains=search)
+        else:
+            messages.warning(request,"Please type any word")
+    
+    return render(request, 'jobsearch.html', {"jobs" : jobs})
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    messages.success(request, "You logged out from the portal")
+    return redirect('home')
 
 @login_required
 def create_user(request):
@@ -43,11 +106,12 @@ def create_user(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         is_admin = request.POST.get("is_admin") == 'on'
+        department = request.POST.get("depart")
             
         user = User.objects.filter(username  = username)
         
         if user.exists():
-            messages.info(request, "Username is already taken")
+            messages.error(request, "Username is already taken")
             return redirect('adduser')
             
         user = User.objects.create_user(
@@ -57,6 +121,7 @@ def create_user(request):
             email=email,
             is_staff= not is_admin,
             is_admin = is_admin,
+            departmant = department,
             password=password
         )
             
@@ -90,8 +155,7 @@ def display_chat(request):
 def display_other_chat(request, user_id):
     chat = Chat.objects.filter(sender_id=user_id).values()
     
-    return render(request, "anotherchat.html", {"messages": chat})
-    
+    return render(request, "anotherchat.html", {"messages": chat})    
 
 @login_required
 def create_chat(request):

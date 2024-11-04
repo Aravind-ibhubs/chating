@@ -15,25 +15,20 @@
 {% endblock  %}
 
 {% block content %}
-{% if messages %}
-{% block messagecontainer %}
-{% for message in messages %}
-    <div {% if message.tags %}class="alert alert-{{message.tags}} w-100"{% endif %} role="alert">{{ message }}</div>
-{% endfor %}
-{% endblock  %}
-{% endif %}
     <h5 class="text-center mt-4">
         {% if request.user.is_admin %}
-        Hi, You are  the admin user. You can create users and 
-        check other users messages.
+        You can complete your tasks for today. 
+        All the Best.
         {% else %}
-        Hi, You are the normal user. You can create message and
-        check your message
+        You can search for your job. Hope you
+        land in dream jobs
         {% endif %}
+    </h5>
+    <div>
         <h5 class="text-left"><b>First Name: </b>{{ request.user.first_name }}</h5>
         <h5><b class="text-left">Last Name: </b>{{ request.user.last_name }}</h5>
         <h5><b class="text-left">Email: </b>{{ request.user.email }}</h5>
         <h5><b class="text-left">Department: </b>{{ request.user.departmant }}</h5>
-    </h5>
+    </div>
 {% endblock content %}
 

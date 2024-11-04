@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Job Search{% endblock %}
+
+{% block name %}
+    Welcome {{ user.username}}!
+{% endblock  %}
+
+{% block content %}
+<div class="m-3">
+    <form method="POST" action="{% url 'jobs' %}">
+        {% csrf_token %}
+        <input type="text" id="search" name="searching" placeholder="please enter the key word" />
+        <button type="submit">Search</button>
+    </form>
+</div>
+<div>
+    {% for job in jobs %}
+    <div class="card m-2 p-2">
+        <h6 class="card-header">{{ job.post }}</h6>
+        <p class="card-text"><b>Company : </b>{{ job.company_name }}</p>
+        <p class="card-text"><b>Description : </b>{{ job.description }}</p>
+        <p class="card-text"><b>Rating : </b>{{ job.rating }}/5</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
