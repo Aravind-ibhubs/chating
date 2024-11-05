@@ -6,6 +6,14 @@
     Welcome {{ user.username}}!
 {% endblock  %}
 
+{% block addbutton %}
+    {% if request.user.is_admin %}
+        <p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+            <a href="{% url 'viewuser' %}">Add user</a>
+        </p>
+    {% endif %}
+{% endblock  %}
+
 {% block content %}
 <div class="m-3">
     <form method="POST" action="{% url 'jobs' %}">
@@ -21,6 +29,7 @@
         <p class="card-text"><b>Company : </b>{{ job.company_name }}</p>
         <p class="card-text"><b>Description : </b>{{ job.description }}</p>
         <p class="card-text"><b>Rating : </b>{{ job.rating }}/5</p>
+        <button class="btn btn-info">Apply</button>
     </div>
     {% endfor %}
 </div>

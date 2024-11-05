@@ -7,7 +7,7 @@
     Welcome {{ user.username}}!
 {% endblock  %}
 {% block addbutton %}
-{% if request.user.is_admin %}
+{% if show %}
     <p class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
         <a href="{% url 'viewuser' %}">Add user</a>
     </p>

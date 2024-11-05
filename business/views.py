@@ -65,19 +65,34 @@ def registeruser(request):
 
 @login_required
 def profile(request):
-    return render(request, 'home.html', {"user" : request.user})
+    depart = request.user.departmant
+    if (((depart != "Job") or (depart != "Employers")) and request.user.is_admin):
+        showUser = True
+    else:
+        showUser = False
+    
+    return render(request, 'home.html', {"user" : request.user, "show": showUser})
 
 @login_required
 def create_post(request):
     if request.method == "POST":
-        form = JobPosts(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_url')  
-    else:
-        form = JobPosts()
+        post = request.POST.get('post')
+        company = request.POST.get('company')
+        description = request.POST.get('description')
+        rating = request.POST.get('rating')
         
-    return render(request, 'createjob.html', {'form': form})
+        job = Jobs.objects.create(
+            post = post,
+            company_name = company,
+            description = description,
+            rating=rating
+        )
+        
+        job.save()
+        messages.success(request, "Job created successfully")
+        return redirect('jobs')
+        
+    return render(request, 'createjob.html')
 
 @login_required
 def job_search(request):

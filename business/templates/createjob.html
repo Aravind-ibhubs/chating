@@ -7,10 +7,26 @@
 {% endblock  %}
 
 {% block content %}
+<h4>Create Job</h4>
 <form method="POST">
 {% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Create</button>
+    <div class="mb-3">
+        <label for="post" class="form-label">Post</label>
+        <input type="text" id="post" name="post" placeholder="Enter name of post" class="form-control" required >
+    </div>
+    <div class="mb-3">
+        <label for="company" class="form-label">Company Name</label>
+        <input type="text" id="company" name="company" placeholder="Enter name of company" class="form-control" required >
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" name="description" placeholder="Enter your description" class="form-control" required ></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input type="number" id="rating" name="rating" placeholder="Enter rating upto 5" class="form-control" required >
+    </div>
+    <button type="submit" class="btn btn-info">Create</button>
 </form>
 {% endblock %}
 
